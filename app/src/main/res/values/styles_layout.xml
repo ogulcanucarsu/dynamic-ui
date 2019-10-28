@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ValidatableInputLayoutStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">64dp</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:layout_marginTop">@dimen/space_xsmall</item>
+        <item name="android:layout_marginLeft">@dimen/space_medium</item>
+        <item name="android:layout_marginRight">@dimen/space_medium</item>
+        <item name="android:padding">@dimen/space_xsmall</item>
+    </style>
+
+    <style name="ValidatableInputLayoutStyle.OutlineBox" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/space_medium</item>
+        <item name="android:layout_marginLeft">@dimen/space_medium</item>
+        <item name="android:layout_marginRight">@dimen/space_medium</item>
+        <item name="android:layout_marginBottom">@dimen/space_xsmall</item>
+        <item name="boxStrokeColor">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="ValidatableInputLayoutTheme.OutlineBox" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="hintTextAppearance">@style/ValidatableInputLayoutStyle.OutlineBox.HintInputLayoutStyle</item>
+        <item name="errorTextAppearance">@style/ValidatableInputLayoutStyle.Box.ErrorInputLayoutStyle</item>
+        <item name="colorControlNormal">@color/colorAccent</item>
+        <item name="colorControlActivated">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="ValidatableInputLayoutStyle.FilledBox" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/space_xsmall</item>
+        <item name="android:layout_marginLeft">@dimen/space_medium</item>
+        <item name="android:layout_marginRight">@dimen/space_medium</item>
+        <item name="boxBackgroundColor">@color/colorWhite</item>
+    </style>
+
+    <style name="ValidatableInputLayoutTheme.FilledBox" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="hintTextAppearance">@style/ValidatableInputLayoutStyle.OutlineBox.HintInputLayoutStyle</item>
+        <item name="errorTextAppearance">@style/ValidatableInputLayoutStyle.Box.ErrorInputLayoutStyle</item>
+        <item name="colorControlNormal">@color/colorAccent</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
+    </style>
+
+    <style name="ValidatableInputLayoutStyle.Box.ErrorInputLayoutStyle" parent="@style/TextAppearance.Design.Error">
+        <item name="boxStrokeColor">@color/colorRed</item>
+        <item name="android:textColor">@color/colorRed</item>
+    </style>
+
+    <style name="ValidatableInputLayoutStyle.OutlineBox.HintInputLayoutStyle" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="ValidatableInputLayoutStyle.ErrorInputLayoutStyle" parent="@android:style/TextAppearance">
+        <item name="android:textColorHint">@color/colorRed</item>
+        <item name="android:background">@drawable/edit_text_error</item>
+    </style>
+
+</resources>

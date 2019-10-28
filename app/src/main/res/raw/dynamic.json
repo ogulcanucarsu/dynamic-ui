@@ -1,0 +1,39 @@
+{
+  "information": [
+    {
+      "type": 0,
+      "text": "This is Error Message"
+    },
+    {
+      "type": 1,
+      "text": "This is Information Message"
+    }
+  ],
+  "textInputLayouts": {
+    "boxStrokeColor": "#E68A06",
+    "backgroundMode": 2,
+    "textAppearance": 1,
+    "cornerRadii": 16,
+    "leftPadding": 4,
+    "topPadding": 0,
+    "rightPadding": 0,
+    "bottomPadding": 0
+  },
+  "dynamicEditTexts": {
+    "hintMessage": "This is Dynamic Hint Message",
+    "emptyErrorMessage": "This edittext is not empty",
+    "keyboardType": 0,
+    "line": 1,
+    "minLength": 3,
+    "maxLength": 13
+  },
+  "button": {
+    "height": 50,
+    "width": 110,
+    "text": "Okey",
+    "textColor": "#ffffff",
+    "textSize": 16,
+    "buttonBackground": 1,
+    "margin": 32
+  }
+}
