@@ -13,8 +13,8 @@ Create android __dynamically component__.
 
 __Information Layout__<br>
 ```
-  1-text
-  2-type(Error and Information type)
+  1-Text
+  2-Type(Error and Information type)
 ```
 __Text Input Layout__<br>
 ```
