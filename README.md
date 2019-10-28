@@ -1,1 +1,1 @@
-# dyanmic-ui
+# dynamic-ui
