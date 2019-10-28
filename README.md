@@ -54,3 +54,7 @@ dependencies {
     implementation 'com.github.ogulcanucarsu:dynamic-ui:1.0.0'
 }
 ```
+
+## Screenshots:
+<img src="https://github.com/ogulcanucarsu/dynamic-ui/blob/master/art/0.jpg"
+height="384" width="210"> <img src="https://github.com/ogulcanucarsu/dynamic-ui/blob/master/art/1.jpg" height="384" width="210"> <img src="https://github.com/ogulcanucarsu/dynamic-ui/blob/master/art/2.jpg" height="384" width="210"> <img src="https://github.com/ogulcanucarsu/dynamic-ui/blob/master/art/3.jpg" height="384" width="210">
