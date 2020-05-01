@@ -53,7 +53,7 @@ maven { url 'https://jitpack.io' }
 ```
 ```
 dependencies {
-    implementation 'com.github.ogulcanucarsu:dynamic-ui:1.0.0'
+    implementation 'com.github.ogulcanucarsu:dynamic-ui:1.1.0'
 }
 ```
 
