@@ -33,6 +33,8 @@ __Dynamic Edit Text__<br>
   5-Line
   6-Min Length
   7-Max Length
+  8-Optional
+    - An optional field does not process(min. length, max. length, empty length) rules
 ```
 __Button__<br>
 ```
