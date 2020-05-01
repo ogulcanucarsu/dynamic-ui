@@ -46,55 +46,69 @@ class DynamicScreenActivity : AppCompatActivity() {
             }
 
             val viewList = arrayListOf<View>()
-
-            val textInputLayout = TextInputLayout(this)
-            textInputLayout.apply {
-                boxStrokeColor = Color.parseColor(responseData?.textInputLayouts?.boxStrokeColor)
-                when (responseData?.textInputLayouts?.backgroundMode) {
-                    2 -> {
-                        setBoxBackgroundMode(TextInputLayout.BOX_BACKGROUND_OUTLINE)
+            responseData?.dynamicEditTextInput?.forEach { editTextInput ->
+                val textInputLayout = TextInputLayout(this)
+                textInputLayout.apply {
+                    boxStrokeColor = Color.parseColor(editTextInput.textInputLayouts.boxStrokeColor)
+                    when (editTextInput.textInputLayouts.backgroundMode) {
+                        2 -> {
+                            setBoxBackgroundMode(TextInputLayout.BOX_BACKGROUND_OUTLINE)
+                        }
+                        else -> {
+                            //no-op
+                        }
                     }
-                    else -> {
-                        //no-op
+                    when (editTextInput.textInputLayouts.textAppearance) {
+                        1 -> {
+                            setHintTextAppearance(R.style.ValidatableInputLayoutStyle_OutlineBox_HintInputLayoutStyle)
+                        }
+                        else -> {
+                            //no-op
+                        }
+                    }
+                    setBoxCornerRadii(
+                        editTextInput.textInputLayouts.cornerRadii.toFloat(),
+                        editTextInput.textInputLayouts.cornerRadii.toFloat(),
+                        editTextInput.textInputLayouts.cornerRadii.toFloat(),
+                        editTextInput.textInputLayouts.cornerRadii.toFloat()
+                    )
+
+                    setPadding(
+                        editTextInput.textInputLayouts.leftPadding,
+                        editTextInput.textInputLayouts.topPadding,
+                        editTextInput.textInputLayouts.rightPadding,
+                        editTextInput.textInputLayouts.bottomPadding
+                    )
+                }
+                mainFormWidget.addView(textInputLayout)
+                viewList.add(textInputLayout)
+
+                val dynamicEditText = DynamicEditText(this)
+                dynamicEditText.apply {
+                    editTextInput.dynamicEditText.hintMessage?.let {
+                        setMessageHint(editTextInput.dynamicEditText.hintMessage)
+                    }
+                    editTextInput.dynamicEditText.emptyErrorMessage?.let {
+                        setMessageEmptyLengthError(editTextInput.dynamicEditText.emptyErrorMessage)
+                    }
+                    editTextInput.dynamicEditText.minLength?.let {
+                        setMessageMinLengthError("Please write min. ${editTextInput.dynamicEditText.minLength} character")
+                    }
+                    setKeyboardType(editTextInput.dynamicEditText.keyboardType)
+                    setLine(editTextInput.dynamicEditText.line)
+                    editTextInput.dynamicEditText.minLength?.let {
+                        setMinLength(editTextInput.dynamicEditText.minLength)
+                    }
+                    editTextInput.dynamicEditText.maxLength?.let {
+                        setMaxLength(editTextInput.dynamicEditText.maxLength)
+                    }
+                    editTextInput.dynamicEditText.optional?.let {
+                        setOptional(editTextInput.dynamicEditText.optional)
                     }
                 }
-                when (responseData?.textInputLayouts?.textAppearance) {
-                    1 -> {
-                        setHintTextAppearance(R.style.ValidatableInputLayoutStyle_OutlineBox_HintInputLayoutStyle)
-                    }
-                    else -> {
-                        //no-op
-                    }
-                }
-                setBoxCornerRadii(
-                    responseData?.textInputLayouts?.cornerRadii!!.toFloat(),
-                    responseData.textInputLayouts.cornerRadii.toFloat(),
-                    responseData.textInputLayouts.cornerRadii.toFloat(),
-                    responseData.textInputLayouts.cornerRadii.toFloat()
-                )
-
-                setPadding(
-                    responseData.textInputLayouts.leftPadding,
-                    responseData.textInputLayouts.topPadding,
-                    responseData.textInputLayouts.rightPadding,
-                    responseData.textInputLayouts.bottomPadding
-                )
+                textInputLayout.addView(dynamicEditText)
+                viewList.add(dynamicEditText)
             }
-            mainFormWidget.addView(textInputLayout)
-            viewList.add(textInputLayout)
-
-            val dynamicEditText = DynamicEditText(this)
-            dynamicEditText.apply {
-                setMessageHint(responseData?.dynamicEditTexts!!.hintMessage)
-                setMessageEmptyLengthError(responseData.dynamicEditTexts.emptyErrorMessage)
-                setMessageMinLengthError("Please write min. ${responseData.dynamicEditTexts.minLength} character")
-                setKeyboardType(responseData.dynamicEditTexts.keyboardType)
-                setLine(responseData.dynamicEditTexts.line)
-                setMinLength(responseData.dynamicEditTexts.minLength)
-                setMaxLength(responseData.dynamicEditTexts.maxLength)
-            }
-            textInputLayout.addView(dynamicEditText)
-            viewList.add(dynamicEditText)
 
             val button = Button(this)
             button.apply {
@@ -126,7 +140,6 @@ class DynamicScreenActivity : AppCompatActivity() {
                     16 -> {
                         textSize =
                             resources.getDimension(R.dimen.font_xlarge) / resources.displayMetrics.scaledDensity
-
                     }
                 }
                 when (responseData.button.buttonBackground) {
@@ -137,7 +150,6 @@ class DynamicScreenActivity : AppCompatActivity() {
                         //no-op
                     }
                 }
-
             }
             mainLinearLayout.addView(button)
             val params = button.layoutParams as LinearLayout.LayoutParams
@@ -155,6 +167,8 @@ class DynamicScreenActivity : AppCompatActivity() {
                         is DynamicEditText -> {
                             if (it.validate()) {
                                 //if UI element's is validate, call service, cache or local data source
+                            } else {
+                                Toast.makeText(this, "Not validate", Toast.LENGTH_LONG).show()
                             }
                         }
                     }

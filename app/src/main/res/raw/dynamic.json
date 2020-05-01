@@ -9,24 +9,50 @@
       "text": "This is Information Message"
     }
   ],
-  "textInputLayouts": {
-    "boxStrokeColor": "#E68A06",
-    "backgroundMode": 2,
-    "textAppearance": 1,
-    "cornerRadii": 16,
-    "leftPadding": 4,
-    "topPadding": 0,
-    "rightPadding": 0,
-    "bottomPadding": 0
-  },
-  "dynamicEditTexts": {
-    "hintMessage": "This is Dynamic Hint Message",
-    "emptyErrorMessage": "This edittext is not empty",
-    "keyboardType": 0,
-    "line": 1,
-    "minLength": 3,
-    "maxLength": 13
-  },
+  "dynamicEditTextInput": [
+    {
+      "textInputLayouts": {
+        "boxStrokeColor": "#E68A06",
+        "backgroundMode": 2,
+        "textAppearance": 1,
+        "cornerRadii": 16,
+        "leftPadding": 4,
+        "topPadding": 0,
+        "rightPadding": 0,
+        "bottomPadding": 0
+      },
+      "dynamicEditText": {
+        "hintMessage": "This is Dynamic Hint Message",
+        "emptyErrorMessage": "This edittext is not empty",
+        "keyboardType": 0,
+        "line": 1,
+        "minLength": 3,
+        "maxLength": 13,
+        "optional": false
+      }
+    },
+    {
+      "textInputLayouts": {
+        "boxStrokeColor": "#E68A06",
+        "backgroundMode": 2,
+        "textAppearance": 1,
+        "cornerRadii": 16,
+        "leftPadding": 4,
+        "topPadding": 0,
+        "rightPadding": 0,
+        "bottomPadding": 0
+      },
+      "dynamicEditText": {
+        "hintMessage": "This is Different Dynamic Hint Message",
+        "emptyErrorMessage": "",
+        "keyboardType": 0,
+        "line": 1,
+        "minLength": 0,
+        "maxLength": 75,
+        "optional": true
+      }
+    }
+  ],
   "button": {
     "height": 50,
     "width": 110,

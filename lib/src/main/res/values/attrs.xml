@@ -8,6 +8,7 @@
         <attr name="prefix" format="string"/>
         <attr name="hint_message" format="string"/>
         <attr name="minLength_errorMessage" format="string"/>
-        <attr name="maxLength_errorMessage" format="string"/>
+        <attr name="empty_errorMessage" format="string"/>
+        <attr name="optional" format="boolean"/>
     </declare-styleable>
 </resources>

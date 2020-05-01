@@ -14,14 +14,15 @@ class DynamicEditText @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null
 ) : ValidatableEditText<String>(context, attrs) {
-    private var keyboardType: Int? = 0
-    private var maxLength: Int? = 50
-    private var minLength: Int? = 0
-    private var line: Int? = 1
-    private var prefix: String = ""
-    private var hintMessage: String = ""
-    private var minLengthErrorMessage: String = ""
-    private var emptyLengthErrorMessage: String = ""
+    private var defaultKeyboardType: Int = 0
+    private var defaultMaxLength: Int = 50
+    private var defaultMinLength: Int = 0
+    private var defaultLine: Int = 1
+    private var defaultPrefix: String = ""
+    private var defaultHintMessage: String = ""
+    private var defaultMinLengthErrorMessage: String = ""
+    private var defaultEmptyLengthErrorMessage: String = ""
+    private var defaultOptional = false
 
     init {
         obtainData(attrs)
@@ -33,21 +34,26 @@ class DynamicEditText @JvmOverloads constructor(
     }
 
     override fun validate(): Boolean {
-        return when {
-            getValue().isNullOrEmpty() -> {
-                (this.parent.parent as? TextInputLayout)?.isErrorEnabled = true
-                (this.parent.parent as? TextInputLayout)?.error = emptyLengthErrorMessage
-                false
+        if (!defaultOptional) {
+            return when {
+                getValue().isNullOrEmpty() -> {
+                    (this.parent.parent as? TextInputLayout)?.isErrorEnabled = true
+                    (this.parent.parent as? TextInputLayout)?.error = defaultEmptyLengthErrorMessage
+                    false
+                }
+                getValue()!!.length < defaultMinLength -> {
+                    (this.parent.parent as? TextInputLayout)?.isErrorEnabled = true
+                    (this.parent.parent as? TextInputLayout)?.error = defaultMinLengthErrorMessage
+                    false
+                }
+                else -> {
+                    (this.parent.parent as? TextInputLayout)?.isErrorEnabled = false
+                    true
+                }
             }
-            getValue()!!.length < minLength!! -> {
-                (this.parent.parent as? TextInputLayout)?.isErrorEnabled = true
-                (this.parent.parent as? TextInputLayout)?.error = minLengthErrorMessage
-                false
-            }
-            else -> {
-                (this.parent.parent as? TextInputLayout)?.isErrorEnabled = false
-                true
-            }
+        } else {
+            (this.parent.parent as? TextInputLayout)?.isErrorEnabled = false
+            return true
         }
     }
 
@@ -65,14 +71,20 @@ class DynamicEditText @JvmOverloads constructor(
                 0,
                 0
             )
-            maxLength = typedArray.getInt(R.styleable.DynamicEditText_max_length, maxLength!!)
-            minLength = typedArray.getInt(R.styleable.DynamicEditText_min_length, minLength!!)
-            keyboardType = typedArray.getInt(R.styleable.DynamicEditText_keyboard_type, keyboardType!!)
-            line = typedArray.getInt(R.styleable.DynamicEditText_line, line!!)
-            prefix = typedArray.getString(R.styleable.DynamicEditText_prefix)!!
-            hintMessage = typedArray.getString(R.styleable.DynamicEditText_hint_message)!!
-            minLengthErrorMessage = typedArray.getString(R.styleable.DynamicEditText_minLength_errorMessage)!!
-            emptyLengthErrorMessage =  typedArray.getString(R.styleable.DynamicEditText_maxLength_errorMessage)!!
+            defaultMaxLength =
+                typedArray.getInt(R.styleable.DynamicEditText_max_length, defaultMaxLength)
+            defaultMinLength =
+                typedArray.getInt(R.styleable.DynamicEditText_min_length, defaultMinLength)
+            defaultKeyboardType =
+                typedArray.getInt(R.styleable.DynamicEditText_keyboard_type, defaultKeyboardType)
+            defaultLine = typedArray.getInt(R.styleable.DynamicEditText_line, defaultLine)
+            defaultPrefix = typedArray.getString(R.styleable.DynamicEditText_prefix)!!
+            defaultHintMessage = typedArray.getString(R.styleable.DynamicEditText_hint_message)!!
+            defaultMinLengthErrorMessage =
+                typedArray.getString(R.styleable.DynamicEditText_minLength_errorMessage)!!
+            defaultEmptyLengthErrorMessage =
+                typedArray.getString(R.styleable.DynamicEditText_empty_errorMessage)!!
+            defaultOptional = typedArray.getBoolean(R.styleable.DynamicEditText_optional, false)
         } catch (e: Exception) {
             // ignored
         } finally {
@@ -81,51 +93,81 @@ class DynamicEditText @JvmOverloads constructor(
     }
 
     private fun initView() {
-        val maxFilter = InputFilter.LengthFilter(maxLength!!)
+        val maxFilter = InputFilter.LengthFilter(defaultMaxLength)
         val filterArray = Array<InputFilter>(1) { maxFilter }
         filters = filterArray
-        setLines(line!!)
-        inputType = when (keyboardType) {
+        setLines(defaultLine)
+        inputType = when (defaultKeyboardType) {
             KeyboardType.NUMERIC.value -> InputType.TYPE_CLASS_NUMBER
             KeyboardType.ALPHA_NUMERIC.value -> InputType.TYPE_CLASS_TEXT
             else -> InputType.TYPE_CLASS_TEXT
         }
-        hint = hintMessage
-        withValidators(DefaultValidator(maxLength!!, minLength!!))
+        hint = defaultHintMessage
+        withValidators(DefaultValidator(defaultMaxLength, defaultMinLength))
+        this.apply {
+            setOnFocusChangeListener { _, hasFocus ->
+                if (hasFocus) {
+                    (this.parent.parent as? TextInputLayout)?.isErrorEnabled = false
+                } else {
+                    if (!defaultOptional) {
+                        if (this.text != null) {
+                            if (this.text.toString().isEmpty()) {
+                                (this.parent.parent as? TextInputLayout)?.isErrorEnabled = true
+                                (this.parent.parent as? TextInputLayout)?.error =
+                                    defaultEmptyLengthErrorMessage
+                            } else if (this.text.toString().length < defaultMinLength) {
+                                (this.parent.parent as? TextInputLayout)?.isErrorEnabled = true
+                                (this.parent.parent as? TextInputLayout)?.error =
+                                    defaultMinLengthErrorMessage
+                            }
+                        } else {
+                            (this.parent.parent as? TextInputLayout)?.isErrorEnabled = true
+                            (this.parent.parent as? TextInputLayout)?.error =
+                                defaultEmptyLengthErrorMessage
+                        }
+                    }
+                }
+            }
+        }
     }
 
     fun setMaxLength(maxLength: Int) {
-        this.maxLength = maxLength
+        this.defaultMaxLength = maxLength
         initView()
     }
 
     fun setMinLength(minLength: Int) {
-        this.minLength = minLength
+        this.defaultMinLength = minLength
         initView()
     }
 
-    fun setMessageHint(hintMessage: String){
-        this.hintMessage = hintMessage
+    fun setMessageHint(hintMessage: String) {
+        this.defaultHintMessage = hintMessage
         initView()
     }
 
-    fun setMessageMinLengthError(minLengthMessage: String){
-        this.minLengthErrorMessage = minLengthMessage
+    fun setMessageMinLengthError(minLengthMessage: String) {
+        this.defaultMinLengthErrorMessage = minLengthMessage
         initView()
     }
 
-    fun setMessageEmptyLengthError(emptyLengthMessage: String){
-        this.emptyLengthErrorMessage = emptyLengthMessage
+    fun setMessageEmptyLengthError(emptyLengthMessage: String) {
+        this.defaultEmptyLengthErrorMessage = emptyLengthMessage
         initView()
     }
 
-    fun setKeyboardType(keyboardType : Int){
-        this.keyboardType = keyboardType
+    fun setKeyboardType(keyboardType: Int) {
+        this.defaultKeyboardType = keyboardType
         initView()
     }
 
-    fun setLine(line: Int){
-        this.line = line
+    fun setLine(line: Int) {
+        this.defaultLine = line
+        initView()
+    }
+
+    fun setOptional(optional: Boolean) {
+        this.defaultOptional = optional
         initView()
     }
 }
